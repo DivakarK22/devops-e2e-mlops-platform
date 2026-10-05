@@ -1,0 +1,21 @@
+prometheus:
+  prometheusSpec:
+    replicas: 2
+    retention: 15d
+    podAntiAffinity: hard
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: [ReadWriteOnce]
+          resources:
+            requests: {storage: 20Gi}
+grafana:
+  replicas: 2
+  adminPassword: CHANGE_ME
+  persistence:
+    enabled: true
+    size: 5Gi
+alertmanager:
+  alertmanagerSpec:
+    replicas: 3
+    podAntiAffinity: hard

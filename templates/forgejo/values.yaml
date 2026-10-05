@@ -1,0 +1,18 @@
+ingress:
+  enabled: false
+gitea:
+  config:
+    server:
+      ROOT_URL: http://forgejo.dev.local/
+      SSH_DOMAIN: forgejo.dev.local
+      SSH_PORT: 2222
+    database:
+      DB_TYPE: sqlite3
+persistence:
+  enabled: true
+  size: 10Gi
+service:
+  http:
+    type: ClusterIP
+  ssh:
+    type: ClusterIP

@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: trivy-scan-example
+  namespace: ci
+spec:
+  ttlSecondsAfterFinished: 600
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: trivy
+          image: aquasec/trivy:latest
+          args: ["image", "--exit-code", "1", "--severity", "CRITICAL,HIGH", "--no-progress", "alpine:3.20"]

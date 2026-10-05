@@ -1,0 +1,13 @@
+community:
+  enabled: true
+monitoringPasscode: CHANGE_ME
+ingress:
+  enabled: false
+persistence:
+  enabled: true
+  size: 20Gi
+postgresql:
+  enabled: true
+resources:
+  requests: {cpu: 500m, memory: 2Gi}
+  limits: {cpu: "2", memory: 4Gi}

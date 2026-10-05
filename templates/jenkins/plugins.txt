@@ -1,0 +1,8 @@
+kubernetes
+workflow-aggregator
+git
+configuration-as-code
+sonar
+harbor
+credentials-binding
+pipeline-stage-view

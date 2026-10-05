@@ -1,0 +1,8 @@
+# Copy to /etc/rancher/k3s/config.yaml on each server; HA uses an odd server count.
+token: "REPLACE_WITH_A_LONG_RANDOM_CLUSTER_TOKEN"
+tls-san:
+  - "k3s-api.example.internal"
+write-kubeconfig-mode: "0640"
+secrets-encryption: true
+etcd-snapshot-schedule-cron: "0 */6 * * *"
+etcd-snapshot-retention: 14

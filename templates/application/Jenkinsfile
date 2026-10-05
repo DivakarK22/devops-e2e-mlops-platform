@@ -1,0 +1,37 @@
+pipeline {
+  agent { label 'kubernetes' }
+  options { timestamps(); disableConcurrentBuilds() }
+  environment {
+    IMAGE = 'harbor.dev.local/library/sample-app'
+  }
+  stages {
+    stage('Checkout and test') {
+      steps { checkout scm; sh 'make test' }
+    }
+    stage('Quality and source scan') {
+      steps {
+        withSonarQubeEnv('sonarqube') { sh 'make sonar' }
+        sh 'trivy fs --exit-code 1 --severity HIGH,CRITICAL --no-progress .'
+      }
+    }
+    stage('Build, scan and publish') {
+      when { branch 'main' }
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'harbor-robot', usernameVariable: 'REGISTRY_USER', passwordVariable: 'REGISTRY_PASSWORD')]) {
+          sh '''
+            set -eu
+            TAG="${GIT_COMMIT}"
+            buildah bud -t "$IMAGE:$TAG" .
+            trivy image --exit-code 1 --severity HIGH,CRITICAL "$IMAGE:$TAG"
+            buildah login -u "$REGISTRY_USER" -p "$REGISTRY_PASSWORD" harbor.dev.local
+            buildah push "$IMAGE:$TAG"
+          '''
+        }
+      }
+    }
+    stage('Promote via GitOps') {
+      when { branch 'main' }
+      steps { echo 'Open a reviewed GitOps change with the immutable image tag; Argo CD deploys after merge.' }
+    }
+  }
+}

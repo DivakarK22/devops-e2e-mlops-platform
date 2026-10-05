@@ -1,0 +1,21 @@
+global:
+  domain: argocd.dev.local
+configs:
+  params:
+    server.insecure: false
+server:
+  replicas: 2
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+repoServer:
+  replicas: 2
+applicationSet:
+  replicas: 2
+redis-ha:
+  enabled: true
+controller:
+  replicas: 1
+notifications:
+  enabled: true

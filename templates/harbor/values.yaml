@@ -1,0 +1,23 @@
+expose:
+  type: clusterIP
+  tls:
+    enabled: false
+externalURL: http://harbor.dev.local
+harborAdminPassword: CHANGE_ME_BEFORE_INSTALL
+trivy:
+  enabled: true
+  replicas: 1
+notary:
+  enabled: false
+redis:
+  type: internal
+database:
+  type: internal
+persistence:
+  enabled: true
+  persistentVolumeClaim:
+    registry:
+      size: 30Gi
+    jobservice:
+      jobLog:
+        size: 1Gi
